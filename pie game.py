@@ -1,8 +1,9 @@
 import pygame as pg
-
+from Characters import *
 import random
 
 pg.init()
+
 
 BLACK = (0,0,0)
 WHITE = (255,255,255)
@@ -12,14 +13,28 @@ YELLOW = (255,255,0)
 BLUE = (0,0,255)
 
 screen = pg.display.set_mode((1280,1024))
-
 clock = pg.time.Clock()
+
+player = Player()
+
+all_sprites = pg.sprite.Group()
+all_sprites.add(player)
+
 
 pos_x =580
 pos_y = 450
+size_x = 50
+size_y = 50
+box_1_dir = 5
 
 size_x = 100
 size_y = 100
+
+pos_x2 = 600
+pos_y2 = 100
+size_x2 = 50
+size_y2 = 50
+box_2_dir = -5
 
 
 i = 0
@@ -46,13 +61,16 @@ while playing:
     if pos_x > 1200:
         pos_x = 1200
 
-    screen.fill(BLUE)
 
-    player_box = pg.Rect(pos_x,pos_y, size_x,size_y)
-    pg.draw.rect(screen, RED, player_box)
-    size_x += random.randint(-10,10)
-    size_y += random.randint(-10,10)
-    
+    if len(all_sprites) < 50:
+        new_player = Player()
+        all_sprites.add(new_player)
+
+    all_sprites.update()
+
+    screen.fill(BLUE)
+    all_sprites.draw(screen)
+
     pg.display.update()
 
     #pos_x += 10
