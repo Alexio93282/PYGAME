@@ -16,9 +16,13 @@ screen = pg.display.set_mode((1280,1024))
 clock = pg.time.Clock()
 
 player = Player()
+enemy = Enemy()
 
 all_sprites = pg.sprite.Group()
 all_sprites.add(player)
+all_sprites.add(enemy)
+enemies = pg.sprite.Group()
+enemies.add(enemy)
 
 
 pos_x =580
@@ -62,11 +66,15 @@ while playing:
         pos_x = 1200
 
 
-    if len(all_sprites) < 50:
-        new_player = Player()
-        all_sprites.add(new_player)
+    if len(all_sprites) < 10:
+        new_enemy = Enemy()
+        all_sprites.add(new_enemy)
 
     all_sprites.update()
+    
+    HJONK_HJONK = pg.sprite.spritecollide(player, enemies, True )
+    if HJONK_HJONK:
+        print("I am up one, Where did you learn to count we are even")
 
     screen.fill(BLUE)
     all_sprites.draw(screen)
