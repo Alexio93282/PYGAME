@@ -15,10 +15,10 @@ BLUE = (0,0,255)
 screen = pg.display.set_mode((1280,1024))
 clock = pg.time.Clock()
 
-player = Player()
-enemy = Enemy()
 
 all_sprites = pg.sprite.Group()
+player = Player(all_sprites)
+enemy = Enemy()
 all_sprites.add(player)
 all_sprites.add(enemy)
 enemies = pg.sprite.Group()
@@ -69,6 +69,7 @@ while playing:
     if len(all_sprites) < 10:
         new_enemy = Enemy()
         all_sprites.add(new_enemy)
+        enemies.add(new_enemy)
 
     all_sprites.update()
     
