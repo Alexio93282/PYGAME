@@ -2,6 +2,7 @@ import pygame as pg
 from Characters import *
 import random
 
+
 pg.init()
 
 
@@ -18,36 +19,26 @@ clock = pg.time.Clock()
 font_cs30 = pg.font.SysFont("Comic Sans", 30)
 font_times40 = pg.font.SysFont("Times New Roman", 40)
 
+pg.mixer.music.load('images/BTLDMC.ogg') 
+pg.mixer.music.play(-1) 
 
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
 player = Player(all_sprites, enemies)
 enemy = Enemy()
+enemy2 = Enemy2()
 all_sprites.add(player)
 all_sprites.add(enemy)
 enemies.add(enemy)
-
+enemies.add(enemy2)
 
 pos_x =580
 pos_y = 450
-size_x = 50
-size_y = 50
-box_1_dir = 5
-
-size_x = 100
-size_y = 100
-
-pos_x2 = 600
-pos_y2 = 100
-size_x2 = 50
-size_y2 = 50
-box_2_dir = -5
-
 
 i = 0
 playing = True
 while playing:
-    clock.tick(120)
+    clock.tick(60)
     print("Jackpot", i)
     i += 1
     for event in pg.event.get():
@@ -55,36 +46,29 @@ while playing:
             playing = False
             pg.quit()
     
-    
-    keys = pg.key.get_pressed()
-    if keys[pg.K_w]:
-        pos_y -= 5
-    if keys[pg.K_s]:
-        pos_y += 5
-    if keys[pg.K_a]:
-        pos_x -= 5
-    if keys[pg.K_d]:
-        pos_x += 5
 
     if pos_x > 1200:
         pos_x = 1200
 
-
-    if len(enemies) < 50:
+    if len(enemies) < 15:
         new_enemy = Enemy()
+        new_enemy2 = Enemy2()
         all_sprites.add(new_enemy)
         enemies.add(new_enemy)
+        all_sprites.add(new_enemy2)
+        enemies.add(new_enemy2)
 
     all_sprites.update()
 
     hits = pg.sprite.spritecollide(player, enemies, True)
     if hits:
         #player.hp -= 10
-        player.take_dmg(1)
+        player.take_dmg(10)
  
         print(player.hp)
- 
+        
         hp_text = font_times40.render(f"HP: {player.hp}", False, (RED))
+ 
     
     HJONK_HJONK = pg.sprite.spritecollide(player, enemies, True )
     if HJONK_HJONK:
@@ -92,10 +76,8 @@ while playing:
 
     screen.blit(bg_img,(0,0))
     all_sprites.draw(screen)
+    hp_text = font_times40.render(f"HP: {player.hp}", False, (RED))
 
     pg.display.update()
 
-    #pos_x += 10
-    #if pos_x > 1200:
-       # pos_x = -200
-       # pos_y += 10 
+    
