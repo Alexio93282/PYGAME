@@ -76,8 +76,6 @@ class Player(pg.sprite.Sprite):
             
         
 
-
-
     def update(self):
         self.animate()
         self.rect.centerx = self.pos_x
@@ -125,15 +123,35 @@ class Enemy(pg.sprite.Sprite):
         self.pos_x = 1300
         self.pos_y = random.randint(300,1300)
         self.speed = random.randint(1,10)
+
+        self.size_x = 1
+        self.size_y = 1
    
+        self.max_size_x = 208
+        self.max_size_y = 300
+
+        self.moving_in = True
+
+
     def update(self):
+
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
 
-        self.pos_x -= self.speed
+        if not self.moving_in:
+            self.pos_x -= self.speed
+
+        else:
+         self.size_x   # gjør den større
+         self.size_y
+
+         if self.size_x <= self.max_size_x: # if self. size er større eller lik max size
+           self.moving_in = False # moving in blir false
+
+        
 
         if self.pos_x < 0:
-            self.kill()
+            self.kill()       
 
 class Enemy2(pg.sprite.Sprite):
     def __init__(self):
@@ -198,3 +216,4 @@ class Cut_end(pg.sprite.Sprite):
         self.pos_x += self.speed
 
         hits = pg.sprite.spritecollide(self, self.enemies, True)
+

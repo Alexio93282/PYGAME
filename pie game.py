@@ -38,7 +38,7 @@ pos_y = 450
 i = 0
 playing = True
 while playing:
-    clock.tick(60)
+    clock.tick(30)
     print("Jackpot", i)
     i += 1
     for event in pg.event.get():
