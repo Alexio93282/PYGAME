@@ -142,8 +142,8 @@ class Enemy(pg.sprite.Sprite):
             self.pos_x -= self.speed
 
         else:
-         self.size_x   # gjør den større
-         self.size_y
+         self.size_x +1  # gjør den større
+         self.size_y +1
 
          if self.size_x <= self.max_size_x: # if self. size er større eller lik max size
            self.moving_in = False # moving in blir false
