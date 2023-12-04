@@ -34,7 +34,7 @@ class Player(pg.sprite.Sprite):
         self.pos_x = 0
         self.pos_y = 400
         self.speed = 20
-        self.hp = 500
+        self.hp = 510
         self.all_sprites = all_sprites
         self.enemies = enemies
         self.standing = True 

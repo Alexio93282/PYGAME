@@ -76,7 +76,7 @@ while playing:
 
     screen.blit(bg_img,(0,0))
     all_sprites.draw(screen)
-    hp_text = font_times40.render(f"HP: {player.hp}", False, (RED))
+    screen.blit(hp_text,(11,11))
 
     pg.display.update()
 
