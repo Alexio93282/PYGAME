@@ -24,14 +24,26 @@ pg.mixer.music.play(-1)
 
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
-player = Player(all_sprites, enemies)
+
+attack = pg.sprite.Group()
+
+player = Player(all_sprites, enemies, attack)
+
 enemy = Enemy()
 enemy2 = Enemy2()
+
+rangedAttack = ranged_attack(1, 1, enemies, attack)
+
 all_sprites.add(player)
 all_sprites.add(enemy)
+
+all_sprites.add(rangedAttack)
+
 enemies.add(enemy2)
 
 enemies.add(enemy)
+
+attack.add(rangedAttack)
 
 spawning_enemy = pg.sprite.Group()
 all_sprites.add(spawning_enemy)
@@ -72,19 +84,22 @@ while playing:
 
     all_sprites.update()
 
-    hits = pg.sprite.spritecollide(player, enemies, True)
+    hp_text = font_times40.render(f"HP: {player.hp}", False, (RED))
+    hits = pg.sprite.spritecollide(player, enemies, False)
+
     if hits:
-        #player.hp -= 10
-        player.take_dmg(10)
- 
-        print(player.hp)
+        for key in hits:
+            if not key.moving_in:
+                player.hp -= 10
+                player.take_dmg(10)
+
+                key.kill()
+                print("I am up one, Where did you learn to count we are even")
+                print("HP:",player.hp)
+            else:
+                print("enemy currently spawning, no damage taken :)")
         
-        hp_text = font_times40.render(f"HP: {player.hp}", False, (RED))
- 
-    
-    HJONK_HJONK = pg.sprite.spritecollide(player, enemies, True )
-    if HJONK_HJONK:
-        print("I am up one, Where did you learn to count we are even")
+
 
     screen.blit(bg_img,(0,0))
     all_sprites.draw(screen)

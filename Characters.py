@@ -23,8 +23,11 @@ STANDING3 = pg.image.load('images/Idle animation2.jpg')
 STANDING2 = pg.transform.scale(STANDING2,(212,460))
 STANDING3 = pg.transform.scale(STANDING3,(212,460))
 
+
+linebreak = "\n \n \n \n \n \n \n \n"
+
 class Player(pg.sprite.Sprite):
-    def __init__(self, all_sprites, enemies):
+    def __init__(self, all_sprites, enemies, attack):
         pg.sprite.Sprite.__init__(self)
         self.current_frame = 0   
         self.last_update = 0 
@@ -42,6 +45,7 @@ class Player(pg.sprite.Sprite):
         self.standing_frames = [STANDING, STANDING2, STANDING3]
         self.attack_cooldown = 0
         self.attack_cooldown2 = 0
+        self.attackGroup = attack
 
         
     def take_dmg(self, dmg):
@@ -64,7 +68,7 @@ class Player(pg.sprite.Sprite):
     def attack(self):
         if self.attack_cooldown == 0:
             self.attack_cooldown = 15
-            projectile = ranged_attack(self.pos_x+10, self.pos_y, self.enemies)
+            projectile = ranged_attack(self.pos_x+10, self.pos_y, self.enemies, self.attackGroup)
             print("Motivation")
             projectile.add(self.all_sprites)
 
@@ -192,13 +196,14 @@ class Enemy2(pg.sprite.Sprite):
             self.kill()
 
 class ranged_attack(pg.sprite.Sprite):
-    def __init__(self,x,y, enemies):
+    def __init__(self, x, y, enemies, attack):
         pg.sprite.Sprite.__init__(self)
         self.image = ranged_image
         self.rect = self.image.get_rect()
         self.image.set_colorkey((255,255,255))
         self.enemies = enemies
         self.killsprite = True
+        self.attackGroup = attack
 
         self.pos_x = x+30
         self.pos_y = y
@@ -214,7 +219,15 @@ class ranged_attack(pg.sprite.Sprite):
  
         self.pos_x += self.speed
 
-        hits = pg.sprite.spritecollide(self, self.enemies, self.killsprite)
+        hits = pg.sprite.spritecollide(self, self.enemies, False)
+
+        for key in hits:
+            if key.moving_in == True:
+                print(linebreak, "MOVING IN", linebreak)
+                return
+            else:
+                key.kill()
+                self.kill()
 
 class Cut_end(pg.sprite.Sprite):
     def __init__(self,x,y, enemies):
@@ -237,5 +250,13 @@ class Cut_end(pg.sprite.Sprite):
         
         self.pos_x += self.speed
 
-        hits = pg.sprite.spritecollide(self, self.enemies, True)
+        hits = pg.sprite.spritecollide(self, self.enemies, False)
+
+        for key in hits:
+            if key.moving_in == True:
+                print(linebreak, "MOVING IN", linebreak)
+                return
+            else:
+                key.kill()
+                self.kill()
 
