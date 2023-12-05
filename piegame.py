@@ -29,8 +29,15 @@ enemy = Enemy()
 enemy2 = Enemy2()
 all_sprites.add(player)
 all_sprites.add(enemy)
-enemies.add(enemy)
 enemies.add(enemy2)
+
+enemies.add(enemy)
+
+spawning_enemy = pg.sprite.Group()
+all_sprites.add(spawning_enemy)
+#spawning_enemy.add(enemy)
+
+
 
 pos_x =580
 pos_y = 450
@@ -45,7 +52,7 @@ while playing:
         if event.type == pg.QUIT:
             playing = False
             pg.quit()
-    
+
 
     if pos_x > 1200:
         pos_x = 1200
@@ -57,6 +64,11 @@ while playing:
         enemies.add(new_enemy)
         all_sprites.add(new_enemy2)
         enemies.add(new_enemy2)
+        
+
+    for obj in enemies:
+        if obj.moving_in == False:
+            enemies.add(obj)
 
     all_sprites.update()
 
@@ -80,4 +92,3 @@ while playing:
 
     pg.display.update()
 
-    

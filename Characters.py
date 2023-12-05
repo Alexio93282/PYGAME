@@ -7,6 +7,7 @@ enemy_image2 = pg.image.load("images/Nero enemy.jpg")
 ranged_image = pg.image.load("images/Ebony Ivory.jpg")
 bg_img = pg.image.load("images/BG.png")
 JCE = pg.image.load("images/Judgement cut.png")
+scaledenemy = False
 
 enemy_image = pg.transform.scale(enemy_image,(208,300))
 enemy_image2 = pg.transform.scale(enemy_image2,(208,300))
@@ -135,23 +136,41 @@ class Enemy(pg.sprite.Sprite):
 
     def update(self):
 
+        global enemy_image
+        self.image = pg.transform.scale(enemy_image,(self.size_x, self.size_y))
+        self.updatedSize = pg.Vector2(self.size_x, self.size_y)
+
+        self.rect = self.image.get_rect()
+        pg.sprite.Sprite.update(scaledenemy)
+        
+        
         self.rect.centerx = self.pos_x
         self.rect.centery = self.pos_y
+        
+        
+        self.rect.size = (self.size_x, self.size_y)
 
         if not self.moving_in:
+            #print("not self.moving_in", self.size_x, self.size_y)
             self.pos_x -= self.speed
 
-        else:
-         self.size_x +1  # gjør den større
-         self.size_y +1
 
-         if self.size_x <= self.max_size_x: # if self. size er større eller lik max size
+        
+        elif self.moving_in:
+            print("self.moving_in", self.size_x, self.size_y)
+            self.size_x += self.max_size_x / 100
+            self.size_y += self.max_size_y / 100
+            print("self.moving_in", self.size_x, self.size_y)
+         
+        if self.size_x >= self.max_size_x: # if self. size er større eller lik max size
            self.moving_in = False # moving in blir false
 
         
 
         if self.pos_x < 0:
-            self.kill()       
+            self.kill() 
+
+           
 
 class Enemy2(pg.sprite.Sprite):
     def __init__(self):
@@ -161,6 +180,7 @@ class Enemy2(pg.sprite.Sprite):
         self.pos_x = 2600
         self.pos_y = random.randint(300,1300)
         self.speed = random.randint(1,10)
+        self.moving_in = False
    
     def update(self):
         self.rect.centerx = self.pos_x
@@ -178,6 +198,7 @@ class ranged_attack(pg.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.image.set_colorkey((255,255,255))
         self.enemies = enemies
+        self.killsprite = True
 
         self.pos_x = x+30
         self.pos_y = y
@@ -189,10 +210,11 @@ class ranged_attack(pg.sprite.Sprite):
     def update(self):
         self.rect.x = self.pos_x
         self.rect.y = self.pos_y
+    
  
         self.pos_x += self.speed
 
-        hits = pg.sprite.spritecollide(self, self.enemies, True)
+        hits = pg.sprite.spritecollide(self, self.enemies, self.killsprite)
 
 class Cut_end(pg.sprite.Sprite):
     def __init__(self,x,y, enemies):
@@ -212,7 +234,7 @@ class Cut_end(pg.sprite.Sprite):
     def update(self):
         self.rect.x = self.pos_x
         self.rect.y = self.pos_y
- 
+        
         self.pos_x += self.speed
 
         hits = pg.sprite.spritecollide(self, self.enemies, True)
