@@ -258,5 +258,4 @@ class Cut_end(pg.sprite.Sprite):
                 return
             else:
                 key.kill()
-                self.kill()
 
